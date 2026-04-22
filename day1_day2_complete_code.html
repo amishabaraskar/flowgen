@@ -1,0 +1,760 @@
+
+<style>
+  .wrap{padding:1.5rem 0}
+  .file-nav{display:flex;gap:5px;flex-wrap:wrap;margin-bottom:1.5rem}
+  .fnb{font-size:11px;padding:4px 11px;border-radius:16px;border:0.5px solid var(--color-border-tertiary);background:transparent;color:var(--color-text-secondary);cursor:pointer;font-weight:500;white-space:nowrap}
+  .fnb.active{background:var(--color-background-info);color:var(--color-text-info);border-color:transparent}
+  .fp{display:none}.fp.active{display:block}
+
+  .file-header{border-radius:var(--border-radius-lg);padding:14px 16px;margin-bottom:16px}
+  .file-title{font-size:16px;font-weight:500;color:#fff;margin:0 0 4px;font-family:var(--font-mono)}
+  .file-purpose{font-size:12px;color:rgba(255,255,255,0.8);margin:0;line-height:1.5}
+
+  .line-block{border:0.5px solid var(--color-border-tertiary);border-radius:var(--border-radius-lg);overflow:hidden;margin-bottom:8px}
+  .line-code-row{display:flex;align-items:stretch}
+  .ln{background:var(--color-background-tertiary);color:var(--color-text-tertiary);font-family:var(--font-mono);font-size:10px;padding:10px 8px;min-width:32px;text-align:right;flex-shrink:0;border-right:0.5px solid var(--color-border-tertiary);line-height:1.7}
+  .lc{background:var(--color-background-tertiary);font-family:var(--font-mono);font-size:11.5px;color:var(--color-text-primary);padding:10px 12px;flex:1;line-height:1.7;white-space:pre-wrap;word-break:break-all}
+  .line-explain-row{padding:10px 14px;border-top:0.5px solid var(--color-border-tertiary);background:var(--color-background-primary)}
+  .le{font-size:12px;color:var(--color-text-primary);line-height:1.6;margin:0 0 5px}
+  .lb{font-size:11px;color:var(--color-text-danger);line-height:1.5;margin:4px 0 0;display:flex;gap:5px;align-items:flex-start}
+  .lb-icon{flex-shrink:0;margin-top:1px}
+
+  .section-lbl{font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:.08em;color:var(--color-text-tertiary);margin:20px 0 8px;padding-bottom:5px;border-bottom:0.5px solid var(--color-border-tertiary)}
+  .concept{background:var(--color-background-secondary);border-left:3px solid #378ADD;border-radius:0 var(--border-radius-md) var(--border-radius-md) 0;padding:10px 13px;margin:12px 0;font-size:12px;color:var(--color-text-secondary);line-height:1.6}
+  .concept strong{color:var(--color-text-primary)}
+  .summary{background:var(--color-background-success);border-radius:var(--border-radius-lg);padding:12px 14px;margin:16px 0}
+  .sum-title{font-size:12px;font-weight:500;color:var(--color-text-success);margin:0 0 6px}
+  .sum-item{font-size:12px;color:var(--color-text-success);line-height:1.6;display:flex;gap:6px;margin-bottom:2px}
+  .nav-btn{font-size:12px;padding:8px 16px;border:0.5px solid var(--color-border-secondary);border-radius:var(--border-radius-md);background:transparent;color:var(--color-text-primary);cursor:pointer;margin-top:12px;margin-right:6px}
+  .nav-btn:hover{background:var(--color-background-secondary)}
+</style>
+
+<div class="wrap">
+<div class="file-nav">
+  <button class="fnb active" onclick="gf(0)">1. db.ts</button>
+  <button class="fnb" onclick="gf(1)">2. User.ts</button>
+  <button class="fnb" onclick="gf(2)">3. Chart.ts</button>
+  <button class="fnb" onclick="gf(3)">4. register</button>
+  <button class="fnb" onclick="gf(4)">5. login</button>
+  <button class="fnb" onclick="gf(5)">6. middleware</button>
+  <button class="fnb" onclick="gf(6)">7. generate</button>
+  <button class="fnb" onclick="gf(7)">8. me route</button>
+  <button class="fnb" onclick="gf(8)">9. charts route</button>
+  <button class="fnb" onclick="gf(9)">10. FlowCanvas</button>
+  <button class="fnb" onclick="gf(10)">11. FlowEditor</button>
+  <button class="fnb" onclick="gf(11)">12. dashboard</button>
+  <button class="fnb" onclick="gf(12)">13. login page</button>
+</div>
+
+<!-- ══════════════════════════════════ FILE 1: db.ts -->
+<div class="fp active" id="f0">
+  <div class="file-header" style="background:#0F2D54">
+    <p class="file-title">lib/db.ts</p>
+    <p class="file-purpose">Connects your app to MongoDB Atlas. Called at the top of every API route before any database query.</p>
+  </div>
+
+  <div class="line-block">
+    <div class="line-code-row"><div class="ln">1</div><div class="lc">import mongoose from 'mongoose';</div></div>
+    <div class="line-explain-row">
+      <p class="le"><strong>mongoose</strong> is the library that lets you talk to MongoDB from Node.js. It gives you Schemas (data shape), Models (query interface), and connection management. Without this import, nothing database-related works.</p>
+      <p class="lb"><span class="lb-icon">⚠</span> Remove this: every line below throws "mongoose is not defined". Run npm install mongoose if you get "Module not found".</p>
+    </div>
+  </div>
+
+  <div class="line-block">
+    <div class="line-code-row"><div class="ln">3</div><div class="lc">const connect = async () => {'{' }</div></div>
+    <div class="line-explain-row">
+      <p class="le">Defines an async function called <strong>connect</strong>. async is required because mongoose.connect() returns a Promise — it takes time to establish a network connection and we need to wait for it with await.</p>
+      <p class="lb"><span class="lb-icon">⚠</span> Remove async: you can't use await inside, mongoose.connect() fires but your code continues before the connection is ready — every query below it fails.</p>
+    </div>
+  </div>
+
+  <div class="line-block">
+    <div class="line-code-row"><div class="ln">4</div><div class="lc">  if (mongoose.connection.readyState >= 1) return;</div></div>
+    <div class="line-explain-row">
+      <p class="le">readyState is 0=disconnected, 1=connected, 2=connecting, 3=disconnecting. If already connected (≥1), skip creating a new connection and return early. <strong>This is the connection caching pattern</strong> — critical because Next.js API routes are serverless functions that restart on every request.</p>
+      <p class="lb"><span class="lb-icon">⚠</span> Remove this line: every single API call creates a brand new MongoDB connection. In production you'll hit Atlas's 500-connection free tier limit within minutes of real traffic and all queries start failing.</p>
+    </div>
+  </div>
+
+  <div class="line-block">
+    <div class="line-code-row"><div class="ln">5</div><div class="lc">  await mongoose.connect(process.env.MONGO_URI!);</div></div>
+    <div class="line-explain-row">
+      <p class="le"><strong>await</strong> pauses until the TCP connection to MongoDB Atlas is established. <strong>process.env.MONGO_URI</strong> reads the value from .env.local — never hardcode credentials. The <strong>!</strong> is TypeScript's non-null assertion — you're telling TS "trust me, this env var exists".</p>
+      <p class="lb"><span class="lb-icon">⚠</span> Remove await: the function returns before connecting — first query throws "MongooseError: operation buffering timed out". Remove !: TypeScript error "Argument of type 'string | undefined' is not assignable". Wrong MONGO_URI: connection throws and crashes the route.</p>
+    </div>
+  </div>
+
+  <div class="line-block">
+    <div class="line-code-row"><div class="ln">7</div><div class="lc">export default connect;</div></div>
+    <div class="line-explain-row">
+      <p class="le">Exports the function so other files can import and call it. Every API route starts with: <strong>import connect from '@/lib/db'; await connect();</strong></p>
+      <p class="lb"><span class="lb-icon">⚠</span> Remove export: no other file can import connect — every route that needs the DB has to re-implement the connection logic from scratch.</p>
+    </div>
+  </div>
+
+  <div class="summary">
+    <div class="sum-title">What this file does in one sentence</div>
+    <div class="sum-item"><span>→</span> Connects to MongoDB once and reuses that connection for every subsequent request — never wastes resources reconnecting.</div>
+  </div>
+  <button class="nav-btn" onclick="gf(1)">Next: User model →</button>
+</div>
+
+<!-- ══════════════════════════════════ FILE 2: User.ts -->
+<div class="fp" id="f1">
+  <div class="file-header" style="background:#0D7A5F">
+    <p class="file-title">lib/models/User.ts</p>
+    <p class="file-purpose">Defines the shape of a User document in MongoDB. Every user you create must match this schema.</p>
+  </div>
+
+  <div class="line-block">
+    <div class="line-code-row"><div class="ln">1</div><div class="lc">import mongoose, {'{'} Schema, model, models {'}'} from 'mongoose';</div></div>
+    <div class="line-explain-row">
+      <p class="le"><strong>Schema</strong> — blueprint for a document's shape and validation rules. <strong>model</strong> — creates the JS class you use to query MongoDB (User.create, User.findOne etc). <strong>models</strong> — object of already-registered models, used to prevent re-registration errors on hot reload.</p>
+      <p class="lb"><span class="lb-icon">⚠</span> Skip importing models: in Next.js dev mode, file hot-reload re-runs this file on every save. Calling model('User', schema) twice throws "Cannot overwrite User model once compiled" and crashes the server.</p>
+    </div>
+  </div>
+
+  <div class="line-block">
+    <div class="line-code-row"><div class="ln">3</div><div class="lc">const userSchema = new Schema({'{'}</div></div>
+    <div class="line-explain-row">
+      <p class="le">Creates a new Schema — the rules every User document must follow. Think of it like a TypeScript interface but for your database. MongoDB is schema-less by default — Mongoose adds this structure on top.</p>
+      <p class="lb"><span class="lb-icon">⚠</span> Remove this and define fields directly in model(): you lose validation, type coercion, and all Mongoose middleware hooks — data quality becomes your problem to manage manually.</p>
+    </div>
+  </div>
+
+  <div class="line-block">
+    <div class="line-code-row"><div class="ln">4</div><div class="lc">  email: {'{'} type: String, required: true, unique: true {'}'},</div></div>
+    <div class="line-explain-row">
+      <p class="le"><strong>type: String</strong> — only accepts strings, rejects numbers/objects. <strong>required: true</strong> — saving a User without email throws a ValidationError. <strong>unique: true</strong> — MongoDB creates a unique index, making duplicate emails impossible at the database level.</p>
+      <p class="lb"><span class="lb-icon">⚠</span> Remove required: users can be created with no email — your login route breaks when it tries to find them. Remove unique: two users can register with the same email — both get in but only one can ever log in.</p>
+    </div>
+  </div>
+
+  <div class="line-block">
+    <div class="line-code-row"><div class="ln">5</div><div class="lc">  password: {'{'} type: String, required: true {'}'},</div></div>
+    <div class="line-explain-row">
+      <p class="le">Stores the bcrypt hash of the password — never plain text. The stored value looks like $2a$10$N9qo8... — completely unreadable. Even if your database is stolen, passwords are safe.</p>
+      <p class="lb"><span class="lb-icon">⚠</span> If you store plain text passwords here, it's a critical security vulnerability. Always hash with bcrypt.hash() in the register route before calling User.create().</p>
+    </div>
+  </div>
+
+  <div class="line-block">
+    <div class="line-code-row"><div class="ln">6</div><div class="lc">  plan: {'{'} type: String, enum: ['free','pro'], default: 'free' {'}'},</div></div>
+    <div class="line-explain-row">
+      <p class="le"><strong>enum</strong> restricts the value to only 'free' or 'pro' — any other string throws a ValidationError. <strong>default: 'free'</strong> means new users automatically get the free plan without you setting it anywhere in the register route.</p>
+      <p class="lb"><span class="lb-icon">⚠</span> Typo the enum value when upgrading (e.g. 'Pro' with capital P): ValidationError, Stripe upgrade silently fails, user stays on free plan. Always use lowercase 'pro' exactly as defined here.</p>
+    </div>
+  </div>
+
+  <div class="line-block">
+    <div class="line-code-row"><div class="ln">7</div><div class="lc">  usageCount: {'{'} type: Number, default: 0 {'}'},</div></div>
+    <div class="line-explain-row">
+      <p class="le">Tracks how many flowcharts this user has generated. Starts at 0 for every new user. We use MongoDB's $inc operator to increment it — safer than reading the value, adding 1, and saving back (which has race conditions under concurrent requests).</p>
+      <p class="lb"><span class="lb-icon">⚠</span> Never do user.usageCount++ then user.save() in production — two simultaneous requests both read 4, both write 5, real count should be 6. Always use findByIdAndUpdate with {'{'} $inc: {'{'} usageCount: 1 {'}'} {'}'}.</p>
+    </div>
+  </div>
+
+  <div class="line-block">
+    <div class="line-code-row"><div class="ln">8</div><div class="lc">{'}'}, {'{'} timestamps: true {'}'});</div></div>
+    <div class="line-explain-row">
+      <p class="le"><strong>timestamps: true</strong> automatically adds createdAt and updatedAt fields to every document. Mongoose manages these — you never set them manually. Essential for knowing when users signed up and when they last updated their profile.</p>
+      <p class="lb"><span class="lb-icon">⚠</span> Remove timestamps: you lose all time tracking. No way to know when a user registered, no way to sort users by signup date, no audit trail.</p>
+    </div>
+  </div>
+
+  <div class="line-block">
+    <div class="line-code-row"><div class="ln">10</div><div class="lc">export default models.User || model('User', userSchema);</div></div>
+    <div class="line-explain-row">
+      <p class="le"><strong>models.User</strong> — check if model was already registered. <strong>|| model('User', userSchema)</strong> — if not, register it now. The string 'User' tells Mongoose to store documents in the 'users' collection (automatically lowercased and pluralised).</p>
+      <p class="lb"><span class="lb-icon">⚠</span> Use just model('User', userSchema) without the models.User check: in Next.js dev mode, every file save hot-reloads this module and tries to register 'User' again — throws "Cannot overwrite model once compiled" instantly.</p>
+    </div>
+  </div>
+
+  <button class="nav-btn" onclick="gf(2)">Next: Chart model →</button>
+</div>
+
+<!-- ══════════════════════════════════ FILE 3: Chart.ts -->
+<div class="fp" id="f2">
+  <div class="file-header" style="background:#3C3489">
+    <p class="file-title">lib/models/Chart.ts</p>
+    <p class="file-purpose">Defines the shape of a Chart document — each generated flowchart saved to the database.</p>
+  </div>
+
+  <div class="line-block">
+    <div class="line-code-row"><div class="ln">4</div><div class="lc">  userId: {'{'} type: mongoose.Schema.Types.ObjectId, ref: 'User' {'}'},</div></div>
+    <div class="line-explain-row">
+      <p class="le"><strong>ObjectId</strong> is MongoDB's native ID type — a 24-character hex string like 507f1f77bcf86cd799439011. <strong>ref: 'User'</strong> creates a reference to the User collection — tells Mongoose these two collections are related, enabling populate() queries later.</p>
+      <p class="lb"><span class="lb-icon">⚠</span> Store userId as a plain String instead of ObjectId: Mongoose won't be able to join/populate User data, and queries like Chart.find({'{'} userId {'}'}) will fail to match because '507f...' !== ObjectId('507f...').</p>
+    </div>
+  </div>
+
+  <div class="line-block">
+    <div class="line-code-row"><div class="ln">5</div><div class="lc">  prompt: {'{'} type: String {'}'},</div></div>
+    <div class="line-explain-row">
+      <p class="le">Stores the original user input — "User signs up, verifies email...". Saved for display in the sidebar and to let users re-run the same prompt later.</p>
+      <p class="lb"><span class="lb-icon">⚠</span> Skip saving the prompt: users can't see what they typed for old charts, can't reuse or edit previous prompts, and you lose data for improving your AI prompt engineering.</p>
+    </div>
+  </div>
+
+  <div class="line-block">
+    <div class="line-code-row"><div class="ln">6</div><div class="lc">  mermaidCode: {'{'} type: String, required: true {'}'},</div></div>
+    <div class="line-explain-row">
+      <p class="le">The actual Mermaid syntax returned by Gemini — "flowchart TD\n  A[Start]...". This is what gets rendered into the diagram. required: true ensures you never save a blank chart.</p>
+      <p class="lb"><span class="lb-icon">⚠</span> Remove required: true — if Gemini returns garbage and your validation check fails silently, an empty mermaidCode gets saved. FlowCanvas receives an empty string and renders nothing — user thinks the app is broken.</p>
+    </div>
+  </div>
+
+  <div class="line-block">
+    <div class="line-code-row"><div class="ln">7</div><div class="lc">  title: {'{'} type: String {'}'},</div></div>
+    <div class="line-explain-row">
+      <p class="le">Auto-generated from prompt.slice(0, 60) in the generate route. Used as the display name in the saved charts sidebar. Without it, the sidebar would show raw MongoDB IDs.</p>
+      <p class="lb"><span class="lb-icon">⚠</span> Skip title: sidebar shows nothing useful — users can't identify which saved chart is which without clicking each one to load it.</p>
+    </div>
+  </div>
+
+  <button class="nav-btn" onclick="gf(3)">Next: Register route →</button>
+</div>
+
+<!-- ══════════════════════════════════ FILE 4: register/route.ts -->
+<div class="fp" id="f3">
+  <div class="file-header" style="background:#185FA5">
+    <p class="file-title">app/api/auth/register/route.ts</p>
+    <p class="file-purpose">Creates a new user account. Hashes the password, saves to MongoDB, sets a JWT cookie.</p>
+  </div>
+
+  <div class="line-block">
+    <div class="line-code-row"><div class="ln">1</div><div class="lc">import {'{'} NextRequest, NextResponse {'}'} from 'next/server';</div></div>
+    <div class="line-explain-row">
+      <p class="le"><strong>NextRequest</strong> is Next.js's enhanced Request object with cookie helpers, geo data, and IP info. <strong>NextResponse</strong> is how you send responses — has .json(), .redirect(), .cookies.set(). These replace Express's req/res.</p>
+      <p class="lb"><span class="lb-icon">⚠</span> Try to use Express's res.json(): "res is not defined" — you're not in Express. This is Next.js Route Handlers — always return NextResponse.</p>
+    </div>
+  </div>
+
+  <div class="line-block">
+    <div class="line-code-row"><div class="ln">7</div><div class="lc">export async function POST(req: NextRequest) {'{'}</div></div>
+    <div class="line-explain-row">
+      <p class="le">The function name <strong>POST</strong> (uppercase) tells Next.js to call this when a POST request hits /api/auth/register. The file path defines the URL — app/api/auth/register/route.ts → /api/auth/register. You can export GET, POST, PUT, DELETE, PATCH in the same file.</p>
+      <p class="lb"><span class="lb-icon">⚠</span> Name it lowercase 'post': Next.js ignores it — all POST requests return 405 Method Not Allowed. Name the file handler.ts instead of route.ts: Next.js doesn't recognise it — 404 on all requests.</p>
+    </div>
+  </div>
+
+  <div class="line-block">
+    <div class="line-code-row"><div class="ln">8</div><div class="lc">  await connect();</div></div>
+    <div class="line-explain-row">
+      <p class="le">Connects to MongoDB before anything else. In Next.js serverless functions, each invocation may start completely fresh with no DB connection. The readyState check in db.ts makes this a no-op if already connected.</p>
+      <p class="lb"><span class="lb-icon">⚠</span> Remove this line: User.create() throws "MongooseError: operation buffering timed out after 10000ms" because there's no active connection to send the query to.</p>
+    </div>
+  </div>
+
+  <div class="line-block">
+    <div class="line-code-row"><div class="ln">9</div><div class="lc">  const {'{'} email, password {'}'} = await req.json();</div></div>
+    <div class="line-explain-row">
+      <p class="le"><strong>req.json()</strong> parses the request body as JSON — returns a Promise so we await it. Destructuring pulls out email and password. This replaces Express's req.body which needed the express.json() middleware.</p>
+      <p class="lb"><span class="lb-icon">⚠</span> Use req.body instead: undefined in Next.js Route Handlers. Forget await: you get a Promise object, not the parsed data — email and password are both undefined and bcrypt.hash(undefined) throws.</p>
+    </div>
+  </div>
+
+  <div class="line-block">
+    <div class="line-code-row"><div class="ln">10</div><div class="lc">  const hash = await bcrypt.hash(password, 10);</div></div>
+    <div class="line-explain-row">
+      <p class="le"><strong>bcrypt.hash()</strong> runs the password through the bcrypt algorithm 2^10 = 1024 times (salt rounds = 10). The output is a 60-character string that looks nothing like the input. It's one-way — you can never reverse it. This takes ~100ms intentionally — making brute force attacks slow.</p>
+      <p class="lb"><span class="lb-icon">⚠</span> Skip hashing and store plain password: if your database is ever breached, every user's password is exposed. Salt rounds above 12: each register call takes seconds — serverless functions time out. Salt rounds below 8: too easy to brute force.</p>
+    </div>
+  </div>
+
+  <div class="line-block">
+    <div class="line-code-row"><div class="ln">11</div><div class="lc">  const user = await User.create({'{'} email, password: hash {'}'});</div></div>
+    <div class="line-explain-row">
+      <p class="le"><strong>User.create()</strong> inserts a new document into the users collection and returns the saved document including its auto-generated _id. We pass hash (not password) — the raw password is never stored. If email already exists, MongoDB throws E11000 duplicate key error.</p>
+      <p class="lb"><span class="lb-icon">⚠</span> Pass password instead of hash: plain text stored in DB — critical security vulnerability. No try/catch around this: duplicate email crashes the handler with a 500 instead of a friendly "Email already exists" message.</p>
+    </div>
+  </div>
+
+  <div class="line-block">
+    <div class="line-code-row"><div class="ln">12</div><div class="lc">  const token = jwt.sign({'{'} id: user._id {'}'}, process.env.JWT_SECRET!, {'{'} expiresIn: '7d' {'}'});</div></div>
+    <div class="line-explain-row">
+      <p class="le"><strong>jwt.sign()</strong> creates a JWT — a signed string containing the payload {'{'} id: user._id {'}'}. The JWT_SECRET signs it so you can verify it hasn't been tampered with. expiresIn: '7d' makes it invalid after 7 days. We only store the user's _id in the payload — nothing sensitive.</p>
+      <p class="lb"><span class="lb-icon">⚠</span> Put password or email in the payload: JWT payloads are base64 encoded, not encrypted — anyone can decode them at jwt.io. expiresIn: '100y': tokens never expire — a stolen token works forever. No JWT_SECRET: jwt.sign() throws, route returns 500.</p>
+    </div>
+  </div>
+
+  <div class="line-block">
+    <div class="line-code-row"><div class="ln">13-14</div><div class="lc">  const response = NextResponse.json({'{'} success: true {'}'});
+  response.cookies.set('token', token, {'{'} httpOnly: true, maxAge: 604800 {'}'});</div></div>
+    <div class="line-explain-row">
+      <p class="le"><strong>httpOnly: true</strong> means the cookie cannot be read by JavaScript (document.cookie returns nothing) — only sent automatically by the browser on every request. This prevents XSS attacks from stealing the token. <strong>maxAge: 604800</strong> = 7 days in seconds — matches JWT expiry.</p>
+      <p class="lb"><span class="lb-icon">⚠</span> Store token in response body and save to localStorage instead: XSS attacks can steal it with document.cookie. httpOnly: false: same problem. In production, also add secure: true so the cookie only travels over HTTPS.</p>
+    </div>
+  </div>
+
+  <button class="nav-btn" onclick="gf(4)">Next: Login route →</button>
+</div>
+
+<!-- ══════════════════════════════════ FILE 5: login/route.ts -->
+<div class="fp" id="f4">
+  <div class="file-header" style="background:#185FA5">
+    <p class="file-title">app/api/auth/login/route.ts</p>
+    <p class="file-purpose">Verifies email + password against the database, issues a new JWT cookie on success.</p>
+  </div>
+
+  <div class="line-block">
+    <div class="line-code-row"><div class="ln">9</div><div class="lc">  const user = await User.findOne({'{'} email {'}'});</div></div>
+    <div class="line-explain-row">
+      <p class="le"><strong>findOne({'{'} email {'}'}) </strong> searches the users collection for the first document where email matches. Returns the full user object (including hashed password) or null if not found.</p>
+      <p class="lb"><span class="lb-icon">⚠</span> Use findById() instead: you don't have the ID at login time — only the email. Use find() instead of findOne(): returns an array, not a single user — bcrypt.compare(password, user[0].password) gets messy.</p>
+    </div>
+  </div>
+
+  <div class="line-block">
+    <div class="line-code-row"><div class="ln">10</div><div class="lc">  if (!user || !await bcrypt.compare(password, user.password))</div></div>
+    <div class="line-explain-row">
+      <p class="le"><strong>!user</strong> — email doesn't exist in DB. <strong>bcrypt.compare(password, user.password)</strong> — re-hashes the submitted password and checks if it matches the stored hash. Returns true/false. Combining both checks in one if statement is intentional — the error message is identical for both cases (security through obscurity — don't tell attackers whether the email exists).</p>
+      <p class="lb"><span class="lb-icon">⚠</span> Return different errors for "email not found" vs "wrong password": attackers can enumerate valid email addresses by trying different emails and watching the error. Always return the same "Invalid credentials" for both cases.</p>
+    </div>
+  </div>
+
+  <div class="line-block">
+    <div class="line-code-row"><div class="ln">11</div><div class="lc">    return res.status(401).json({'{'} error: 'Invalid credentials' {'}'});</div></div>
+    <div class="line-explain-row">
+      <p class="le"><strong>401 Unauthorized</strong> is the correct HTTP status for "you didn't authenticate correctly". 403 would mean "authenticated but not allowed" — wrong here. 400 would mean "bad request" — also wrong. HTTP status codes carry semantic meaning.</p>
+      <p class="lb"><span class="lb-icon">⚠</span> Return 200 with an error message: the frontend's if (!res.ok) check won't trigger — it'll try to redirect to /dashboard even though login failed. Always use correct HTTP status codes.</p>
+    </div>
+  </div>
+
+  <button class="nav-btn" onclick="gf(5)">Next: Middleware →</button>
+</div>
+
+<!-- ══════════════════════════════════ FILE 6: middleware.ts -->
+<div class="fp" id="f5">
+  <div class="file-header" style="background:#4A3BAA">
+    <p class="file-title">middleware.ts</p>
+    <p class="file-purpose">Runs before every /dashboard request. Checks the JWT cookie — redirects to /login if missing or invalid.</p>
+  </div>
+
+  <div class="concept"><strong>Why middleware instead of checking auth inside the page?</strong> If you check auth inside dashboard/page.tsx, the page starts rendering, data starts loading, then the redirect fires — user sees a flash of protected content. Middleware intercepts the request before any page code runs — redirect is instant and clean.</div>
+
+  <div class="line-block">
+    <div class="line-code-row"><div class="ln">2</div><div class="lc">import {'{'} jwtVerify {'}'} from 'jose';</div></div>
+    <div class="line-explain-row">
+      <p class="le"><strong>jose</strong> is a Web Crypto API-based JWT library. It works in Edge Runtime (the environment middleware runs in), browsers, Deno, everywhere. jsonwebtoken uses Node.js crypto which isn't available in Edge Runtime.</p>
+      <p class="lb"><span class="lb-icon">⚠</span> Import from 'jsonwebtoken' instead: "The edge runtime does not support Node.js 'crypto' module" — middleware crashes on every request. Always use jose specifically in middleware.ts.</p>
+    </div>
+  </div>
+
+  <div class="line-block">
+    <div class="line-code-row"><div class="ln">4</div><div class="lc">export async function middleware(req: NextRequest) {'{'}</div></div>
+    <div class="line-explain-row">
+      <p class="le">Must be named exactly <strong>middleware</strong> (lowercase) and exported as a named export — not default. Next.js looks for this specific export in middleware.ts at startup. This is a framework convention.</p>
+      <p class="lb"><span class="lb-icon">⚠</span> Name it authMiddleware or export default: Next.js can't find it — middleware silently never runs, every route is unprotected. This was your exact bug — fixed by restarting npm run dev after creating the file.</p>
+    </div>
+  </div>
+
+  <div class="line-block">
+    <div class="line-code-row"><div class="ln">5</div><div class="lc">  const token = req.cookies.get('token')?.value;</div></div>
+    <div class="line-explain-row">
+      <p class="le"><strong>req.cookies.get('token')</strong> reads the httpOnly cookie named 'token'. The <strong>?.</strong> optional chaining returns undefined instead of crashing if the cookie doesn't exist. <strong>.value</strong> extracts the string from the cookie object.</p>
+      <p class="lb"><span class="lb-icon">⚠</span> Try to read from localStorage here: middleware runs server-side — localStorage is browser-only. req.cookies is the only way to read auth tokens in server-side middleware.</p>
+    </div>
+  </div>
+
+  <div class="line-block">
+    <div class="line-code-row"><div class="ln">6</div><div class="lc">  if (!token) return NextResponse.redirect(new URL('/login', req.url));</div></div>
+    <div class="line-explain-row">
+      <p class="le">If no token cookie — user isn't logged in. <strong>new URL('/login', req.url)</strong> builds a full URL using req.url as the base — works in both localhost:3000 and production domains without hardcoding.</p>
+      <p class="lb"><span class="lb-icon">⚠</span> Hardcode NextResponse.redirect('http://localhost:3000/login'): in production all users get redirected to localhost — app breaks entirely for real users. Always use new URL('/path', req.url).</p>
+    </div>
+  </div>
+
+  <div class="line-block">
+    <div class="line-code-row"><div class="ln">8</div><div class="lc">    await jwtVerify(token, new TextEncoder().encode(process.env.JWT_SECRET!));</div></div>
+    <div class="line-explain-row">
+      <p class="le"><strong>jwtVerify()</strong> decodes the token and verifies its signature using the secret. <strong>new TextEncoder().encode()</strong> converts the JWT_SECRET string into a Uint8Array — jose requires the key as bytes, not a plain string (unlike jsonwebtoken which accepts strings).</p>
+      <p class="lb"><span class="lb-icon">⚠</span> Change JWT_SECRET after users have registered: every existing token fails verification — all users get logged out instantly. Skip TextEncoder: jose throws "Key must be a CryptoKey or a Uint8Array" — all requests redirect to /login even with valid tokens.</p>
+    </div>
+  </div>
+
+  <div class="line-block">
+    <div class="line-code-row"><div class="ln">14-16</div><div class="lc">export const config = {'{'} matcher: ['/dashboard/:path*'] {'}'};</div></div>
+    <div class="line-explain-row">
+      <p class="le"><strong>matcher</strong> tells Next.js which routes this middleware applies to. <strong>/dashboard/:path*</strong> matches /dashboard and any sub-path. Without this, middleware runs on every request including /_next/static/ CSS/JS files.</p>
+      <p class="lb"><span class="lb-icon">⚠</span> Remove matcher: middleware runs on every request including static assets — all CSS/JS files get redirected to /login — app is completely broken and unstyled. Include /login in matcher: redirect loop — /login redirects to /login forever.</p>
+    </div>
+  </div>
+
+  <button class="nav-btn" onclick="gf(6)">Next: Generate route →</button>
+</div>
+
+<!-- ══════════════════════════════════ FILE 7: generate/route.ts -->
+<div class="fp" id="f6">
+  <div class="file-header" style="background:#854F0B">
+    <p class="file-title">app/api/charts/generate/route.ts</p>
+    <p class="file-purpose">The core of the product. Receives a prompt, calls Gemini AI, validates the output, saves to MongoDB, returns the chart.</p>
+  </div>
+
+  <div class="line-block">
+    <div class="line-code-row"><div class="ln">6</div><div class="lc">const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY!);</div></div>
+    <div class="line-explain-row">
+      <p class="le">Creates the Gemini client at module level — runs once when the file is first imported, not on every request. This avoids creating a new client instance for every API call, which would be wasteful.</p>
+      <p class="lb"><span class="lb-icon">⚠</span> Move inside the POST function: a new client is created on every request — minor performance waste but also means GEMINI_API_KEY is read on every call. Missing key: throws immediately on module load, not just when the route is called.</p>
+    </div>
+  </div>
+
+  <div class="line-block">
+    <div class="line-code-row"><div class="ln">8-13</div><div class="lc">const SYSTEM = `You are a flowchart generator.
+Respond ONLY with valid Mermaid syntax.
+Start with: flowchart TD
+No explanation. No markdown fences.`;</div></div>
+    <div class="line-explain-row">
+      <p class="le">The system prompt is the most important string in your codebase — it determines output quality. "Respond ONLY" prevents Gemini from adding explanations. "Start with: flowchart TD" gives you a reliable prefix to validate against. "No markdown fences" stops ```mermaid wrapping.</p>
+      <p class="lb"><span class="lb-icon">⚠</span> Vague system prompt like "generate a flowchart": Gemini sometimes returns plain text descriptions, sometimes Mermaid, sometimes with fences — your validation check fails constantly. Be specific and restrictive. This prompt IS your product quality.</p>
+    </div>
+  </div>
+
+  <div class="line-block">
+    <div class="line-code-row"><div class="ln">21-23</div><div class="lc">  if (user?.plan === 'free' && user.usageCount >= 5)
+    return NextResponse.json({'{'} error: 'Upgrade to Pro' {'}'}, {'{'} status: 403 {'}'});</div></div>
+    <div class="line-explain-row">
+      <p class="le">The monetisation gate. Checks BEFORE calling Gemini — if the user is over limit, reject immediately without spending any API credits. 403 Forbidden = you're authenticated but not allowed to do this.</p>
+      <p class="lb"><span class="lb-icon">⚠</span> Check AFTER calling Gemini: you've already been billed for the API call even though you're going to reject it. Always gate before expensive operations.</p>
+    </div>
+  </div>
+
+  <div class="line-block">
+    <div class="line-code-row"><div class="ln">30-35</div><div class="lc">  mermaidCode = mermaidCode
+    .replace(/^```mermaid\n?/i, "")
+    .replace(/^```\n?/i, "")
+    .replace(/\n?```$/i, "")
+    .trim();</div></div>
+    <div class="line-explain-row">
+      <p class="le">Strips markdown code fences even if Gemini adds them despite instructions. The regex matches ```mermaid or ``` at the start and ``` at the end. .trim() removes leading/trailing whitespace. This is a defensive layer on top of the system prompt.</p>
+      <p class="lb"><span class="lb-icon">⚠</span> Skip fence stripping: ~20% of Gemini responses include fences despite instructions. mermaid.render() receives "```mermaid\nflowchart TD..." and throws a parse error — blank diagram for the user.</p>
+    </div>
+  </div>
+
+  <div class="line-block">
+    <div class="line-code-row"><div class="ln">37-39</div><div class="lc">  if (!mermaidCode.startsWith('flowchart'))
+    return NextResponse.json({'{'} error: 'Bad AI output' {'}'}, {'{'} status: 500 {'}'});</div></div>
+    <div class="line-explain-row">
+      <p class="le">Validates AI output before saving. If Gemini returned anything other than valid Mermaid syntax, reject it. This is your quality gate — never save unvalidated AI output to your database.</p>
+      <p class="lb"><span class="lb-icon">⚠</span> Skip validation: invalid Mermaid gets saved and returned to users — FlowCanvas crashes, diagram is blank, user thinks your app is broken. Always validate AI output before persisting.</p>
+    </div>
+  </div>
+
+  <div class="line-block">
+    <div class="line-code-row"><div class="ln">41-42</div><div class="lc">  const chart = await Chart.create({'{'} userId, prompt, mermaidCode, title: prompt.slice(0,60) {'}'});
+  await User.findByIdAndUpdate(userId, {'{'} $inc: {'{'} usageCount: 1 {'}'} {'}'});</div></div>
+    <div class="line-explain-row">
+      <p class="le"><strong>prompt.slice(0,60)</strong> takes the first 60 chars as the title — auto-generates human-readable names. <strong>$inc: {'{'} usageCount: 1 {'}'}</strong> atomically increments the counter — MongoDB does the read-add-write in one operation at the database level.</p>
+      <p class="lb"><span class="lb-icon">⚠</span> Do user.usageCount++ then user.save(): race condition — two simultaneous requests both read 4, both write 5, real count should be 6. User gets an extra free chart they shouldn't. Always use $inc for counters.</p>
+    </div>
+  </div>
+
+  <button class="nav-btn" onclick="gf(7)">Next: /api/auth/me →</button>
+</div>
+
+<!-- ══════════════════════════════════ FILE 8: me/route.ts -->
+<div class="fp" id="f7">
+  <div class="file-header" style="background:#0D7A5F">
+    <p class="file-title">app/api/auth/me/route.ts</p>
+    <p class="file-purpose">Decodes the JWT cookie server-side and returns the userId. Used by the dashboard to know which user is logged in.</p>
+  </div>
+
+  <div class="concept"><strong>Why do we need this?</strong> The token is in an httpOnly cookie — browser JavaScript cannot read it. document.cookie won't show it. The only way to get the userId from the token is to send it to the server, decode it there, and return just the ID. That's what this route does.</div>
+
+  <div class="line-block">
+    <div class="line-code-row"><div class="ln">5</div><div class="lc">  const token = req.cookies.get('token')?.value;</div></div>
+    <div class="line-explain-row">
+      <p class="le">Reads the httpOnly cookie. Since this runs server-side (Route Handler), it can access httpOnly cookies — unlike browser JavaScript which is blocked from reading them intentionally.</p>
+      <p class="lb"><span class="lb-icon">⚠</span> Try to read it client-side with document.cookie: returns empty string — httpOnly cookies are invisible to JavaScript by design. This is the only correct way to access it.</p>
+    </div>
+  </div>
+
+  <div class="line-block">
+    <div class="line-code-row"><div class="ln">9</div><div class="lc">    const {'{'} payload {'}'} = await jwtVerify(token, new TextEncoder().encode(process.env.JWT_SECRET!));</div></div>
+    <div class="line-explain-row">
+      <p class="le">jwtVerify returns an object with payload (the data you signed — {'{'} id: user._id {'}'}) and protectedHeader. Destructuring {'{'} payload {'}'} gets just the data. If the token is expired or tampered, this throws — caught by the catch block.</p>
+      <p class="lb"><span class="lb-icon">⚠</span> Skip verification and just decode: anyone could forge a token with any userId and get access to other users' charts. Always verify the signature — never just decode.</p>
+    </div>
+  </div>
+
+  <div class="line-block">
+    <div class="line-code-row"><div class="ln">10</div><div class="lc">    return NextResponse.json({'{'} userId: payload.id {'}'});</div></div>
+    <div class="line-explain-row">
+      <p class="le">Returns only the userId — not the full payload, not the token, not any other user data. The dashboard receives this and uses it when calling /api/charts/generate.</p>
+      <p class="lb"><span class="lb-icon">⚠</span> Return the full token or password hash: exposes sensitive data unnecessarily. Only return what the client actually needs.</p>
+    </div>
+  </div>
+
+  <button class="nav-btn" onclick="gf(8)">Next: Charts GET route →</button>
+</div>
+
+<!-- ══════════════════════════════════ FILE 9: charts/route.ts -->
+<div class="fp" id="f8">
+  <div class="file-header" style="background:#3C3489">
+    <p class="file-title">app/api/charts/route.ts</p>
+    <p class="file-purpose">Returns all saved charts for the current user. Used by the dashboard sidebar.</p>
+  </div>
+
+  <div class="line-block">
+    <div class="line-code-row"><div class="ln">8</div><div class="lc">  const charts = await Chart.find({'{'} userId {'}'}).sort({'{'} createdAt: -1 {'}'}).limit(20);</div></div>
+    <div class="line-explain-row">
+      <p class="le"><strong>Chart.find({'{'} userId {'}'}) </strong> — finds all charts belonging to this user. <strong>.sort({'{'} createdAt: -1 {'}'}) </strong> — -1 means descending — newest first. <strong>.limit(20)</strong> — never return unlimited data, always paginate or limit.</p>
+      <p class="lb"><span class="lb-icon">⚠</span> Skip the userId filter: returns every chart from every user — massive privacy breach. Skip limit: a power user with 10,000 charts sends 10,000 documents to the browser — browser freezes. Always filter by userId and always limit results.</p>
+    </div>
+  </div>
+
+  <button class="nav-btn" onclick="gf(9)">Next: FlowCanvas →</button>
+</div>
+
+<!-- ══════════════════════════════════ FILE 10: FlowCanvas.tsx -->
+<div class="fp" id="f9">
+  <div class="file-header" style="background:#854F0B">
+    <p class="file-title">components/FlowCanvas.tsx</p>
+    <p class="file-purpose">Receives mermaidCode as a prop, renders it as an SVG diagram using mermaid.js in the browser.</p>
+  </div>
+
+  <div class="line-block">
+    <div class="line-code-row"><div class="ln">1</div><div class="lc">"use client";</div></div>
+    <div class="line-explain-row">
+      <p class="le">Marks this as a Client Component — it runs in the browser. By default in Next.js App Router, all components are Server Components (run on the server). Mermaid.js needs the browser DOM to render SVGs — it can't run on the server.</p>
+      <p class="lb"><span class="lb-icon">⚠</span> Remove "use client": Next.js tries to render this on the server — mermaid.js accesses window/document which don't exist server-side — throws "window is not defined" and crashes the entire page.</p>
+    </div>
+  </div>
+
+  <div class="line-block">
+    <div class="line-code-row"><div class="ln">5-8</div><div class="lc">mermaid.initialize({'{'} startOnLoad: false, theme: 'default', securityLevel: 'loose' {'}'});</div></div>
+    <div class="line-explain-row">
+      <p class="le"><strong>startOnLoad: false</strong> — don't auto-scan the page for mermaid code, we call render() manually. <strong>theme: 'default'</strong> — white background, dark arrows. <strong>securityLevel: 'loose'</strong> — allows clickable nodes in diagrams. This runs once at module level — not inside the component.</p>
+      <p class="lb"><span class="lb-icon">⚠</span> Put initialize() inside the component function: it runs on every render — re-initialising mid-session can reset themes or cause rendering glitches. Always call it once at module level.</p>
+    </div>
+  </div>
+
+  <div class="line-block">
+    <div class="line-code-row"><div class="ln">15</div><div class="lc">  const ref = useRef&lt;HTMLDivElement&gt;(null);</div></div>
+    <div class="line-explain-row">
+      <p class="le"><strong>useRef</strong> gives you a direct reference to the DOM element without causing re-renders when it changes. We need this to directly set innerHTML with the rendered SVG. useState would cause infinite re-render loops here.</p>
+      <p class="lb"><span class="lb-icon">⚠</span> Use useState for the DOM ref: setting it would trigger a re-render, which would re-run the effect, which would set it again — infinite loop. useRef is the correct tool for DOM references.</p>
+    </div>
+  </div>
+
+  <div class="line-block">
+    <div class="line-code-row"><div class="ln">17</div><div class="lc">  useEffect(() =&gt; {'{'}</div></div>
+    <div class="line-explain-row">
+      <p class="le"><strong>useEffect</strong> runs after the component renders — when the DOM is ready. This is where you do anything that needs the browser environment: DOM manipulation, subscriptions, timers, third-party library calls.</p>
+      <p class="lb"><span class="lb-icon">⚠</span> Call mermaid.render() directly in the component body (not in useEffect): runs during render before the DOM exists — ref.current is null — nothing to render into. Always use useEffect for DOM operations.</p>
+    </div>
+  </div>
+
+  <div class="line-block">
+    <div class="line-code-row"><div class="ln">21</div><div class="lc">      ref.current.innerHTML = "";</div></div>
+    <div class="line-explain-row">
+      <p class="le">Clears the previous diagram before rendering the new one. Without this, each new diagram is appended after the previous one — the canvas fills up with every chart ever generated in the session.</p>
+      <p class="lb"><span class="lb-icon">⚠</span> Remove this line: generate 5 charts in a row — all 5 appear stacked in the canvas. Only the latest should be visible.</p>
+    </div>
+  </div>
+
+  <div class="line-block">
+    <div class="line-code-row"><div class="ln">23</div><div class="lc">      const id = "fc-" + Date.now();</div></div>
+    <div class="line-explain-row">
+      <p class="le">mermaid.render() requires a unique ID for each render — it creates a hidden SVG element with this ID in the DOM to process the diagram. Date.now() returns milliseconds since epoch — always unique.</p>
+      <p class="lb"><span class="lb-icon">⚠</span> Use a hardcoded ID like "flowchart": on the second render, mermaid finds an existing element with that ID and throws "Element with id flowchart already exists" — no diagram renders after the first one.</p>
+    </div>
+  </div>
+
+  <div class="line-block">
+    <div class="line-code-row"><div class="ln">24</div><div class="lc">      const {'{'} svg {'}'} = await mermaid.render(id, code);</div></div>
+    <div class="line-explain-row">
+      <p class="le"><strong>mermaid.render()</strong> parses the Mermaid syntax and returns a Promise with the rendered SVG string. We then inject that SVG string into the DOM via innerHTML. This is why the function must be async and use await.</p>
+      <p class="lb"><span class="lb-icon">⚠</span> Skip await: render() is async — you get a Promise object instead of {'{'} svg {'}'} — innerHTML gets "[object Promise]" text instead of a diagram.</p>
+    </div>
+  </div>
+
+  <div class="line-block">
+    <div class="line-code-row"><div class="ln">26</div><div class="lc">      ref.current.innerHTML = svg;</div></div>
+    <div class="line-explain-row">
+      <p class="le">Injects the SVG string directly into the DOM. The SVG is a complete self-contained diagram with paths, text, and arrows — it renders immediately as a visual flowchart.</p>
+      <p class="lb"><span class="lb-icon">⚠</span> Try to use dangerouslySetInnerHTML in JSX instead: React sanitises and re-renders the container — mermaid's internal references break. Direct innerHTML assignment is the correct approach here.</p>
+    </div>
+  </div>
+
+  <div class="line-block">
+    <div class="line-code-row"><div class="ln">29</div><div class="lc">  {'}'}, [code]);</div></div>
+    <div class="line-explain-row">
+      <p class="le">The dependency array [code] tells React to re-run this effect every time the code prop changes. When the user generates a new chart, code changes, the effect re-runs, the new diagram renders.</p>
+      <p class="lb"><span class="lb-icon">⚠</span> Empty array []: effect runs only once on mount — new charts never render after the first one. No array at all: effect runs on every render — infinite loop since rendering updates state which triggers another render.</p>
+    </div>
+  </div>
+
+  <button class="nav-btn" onclick="gf(10)">Next: FlowEditor →</button>
+</div>
+
+<!-- ══════════════════════════════════ FILE 11: FlowEditor.tsx -->
+<div class="fp" id="f10">
+  <div class="file-header" style="background:#3B6D11">
+    <p class="file-title">components/FlowEditor.tsx</p>
+    <p class="file-purpose">The prompt input + Generate button. Handles the API call and passes mermaidCode up to the parent dashboard via a callback.</p>
+  </div>
+
+  <div class="line-block">
+    <div class="line-code-row"><div class="ln">6-9</div><div class="lc">interface FlowEditorProps {'{'} 
+  userId: string;
+  onGenerate: (mermaidCode: string) =&gt; void;
+{'}'}</div></div>
+    <div class="line-explain-row">
+      <p class="le">TypeScript interface defines what props this component accepts. <strong>userId</strong> is passed to the generate API. <strong>onGenerate</strong> is a callback function — when generation succeeds, FlowEditor calls this with the mermaidCode. The parent (dashboard) decides what to do with it.</p>
+      <p class="lb"><span class="lb-icon">⚠</span> Skip the interface: TypeScript allows any props — typos in prop names fail silently at runtime instead of being caught at compile time. Interfaces are how you catch "oGenerate" instead of "onGenerate" before running the code.</p>
+    </div>
+  </div>
+
+  <div class="line-block">
+    <div class="line-code-row"><div class="ln">18</div><div class="lc">    e.preventDefault();</div></div>
+    <div class="line-explain-row">
+      <p class="le">Prevents the default browser form submit behaviour — which would reload the entire page. Without this, clicking Generate submits the form, the page reloads, all state is lost.</p>
+      <p class="lb"><span class="lb-icon">⚠</span> Remove this: every Generate click reloads the page — the user loses their prompt, the diagram disappears, the loading state never shows. Essential for any React form handler.</p>
+    </div>
+  </div>
+
+  <div class="line-block">
+    <div class="line-code-row"><div class="ln">25-30</div><div class="lc">    const res = await fetch('/api/charts/generate', {'{'} 
+      method: 'POST',
+      headers: {'{'} 'Content-Type': 'application/json' {'}'},
+      body: JSON.stringify({'{'} prompt, userId {'}'})
+    {'}'});</div></div>
+    <div class="line-explain-row">
+      <p class="le"><strong>fetch()</strong> makes an HTTP request from the browser. <strong>Content-Type: application/json</strong> tells the server the body is JSON. <strong>JSON.stringify()</strong> converts the JS object to a JSON string — fetch only accepts strings or FormData in the body, not raw objects.</p>
+      <p class="lb"><span class="lb-icon">⚠</span> Skip Content-Type header: Next.js receives the body as plain text — req.json() may fail to parse it. Skip JSON.stringify: body becomes "[object Object]" — the server gets nothing useful. Both are required together.</p>
+    </div>
+  </div>
+
+  <div class="line-block">
+    <div class="line-code-row"><div class="ln">34</div><div class="lc">    onGenerate(data.chart.mermaidCode);</div></div>
+    <div class="line-explain-row">
+      <p class="le">Calls the callback passed from the parent dashboard. This is the "lifting state up" pattern — FlowEditor doesn't store or render the diagram itself, it just notifies the parent. The parent updates its own state, which re-renders FlowCanvas with the new code.</p>
+      <p class="lb"><span class="lb-icon">⚠</span> Try to import and render FlowCanvas directly inside FlowEditor: tight coupling — FlowEditor now does two jobs. Components should have single responsibilities. The callback pattern keeps them independent and reusable.</p>
+    </div>
+  </div>
+
+  <button class="nav-btn" onclick="gf(11)">Next: Dashboard →</button>
+</div>
+
+<!-- ══════════════════════════════════ FILE 12: dashboard/page.tsx -->
+<div class="fp" id="f11">
+  <div class="file-header" style="background:#993C1D">
+    <p class="file-title">app/dashboard/page.tsx</p>
+    <p class="file-purpose">The main app page. Fetches userId, loads saved charts, composes FlowEditor and FlowCanvas together.</p>
+  </div>
+
+  <div class="line-block">
+    <div class="line-code-row"><div class="ln">6-9</div><div class="lc">const FlowCanvas = dynamic(() =&gt; import('@/components/FlowCanvas'), {'{'} 
+  ssr: false,
+  loading: () =&gt; &lt;div&gt;Loading renderer...&lt;/div&gt;
+{'}'});</div></div>
+    <div class="line-explain-row">
+      <p class="le"><strong>dynamic()</strong> is Next.js's code-splitting import. <strong>ssr: false</strong> tells Next.js to completely skip server-side rendering for this component — it only loads in the browser. The loading fallback shows while the mermaid.js bundle downloads.</p>
+      <p class="lb"><span class="lb-icon">⚠</span> Use regular import FlowCanvas from '@/components/FlowCanvas': Next.js server-renders it, mermaid.js tries to access window — "window is not defined" crashes the entire page. ssr: false is not optional for any library that touches the DOM.</p>
+    </div>
+  </div>
+
+  <div class="line-block">
+    <div class="line-code-row"><div class="ln">20-24</div><div class="lc">  useEffect(() =&gt; {'{'} 
+    fetch('/api/auth/me')
+      .then(r =&gt; r.json())
+      .then(d =&gt; {'{'} if (d.userId) setUserId(d.userId) {'}'});
+  {'}'}, []);</div></div>
+    <div class="line-explain-row">
+      <p class="le">Fetches the userId from the /api/auth/me route on mount. The empty [] means this runs once when the component first loads. We can't read the httpOnly cookie in JavaScript — the me route decodes it server-side and returns just the ID.</p>
+      <p class="lb"><span class="lb-icon">⚠</span> Try to read userId from localStorage or document.cookie: httpOnly cookies are invisible to JS — you get nothing. The me route is the only correct way to get the current user's ID in a client component.</p>
+    </div>
+  </div>
+
+  <div class="line-block">
+    <div class="line-code-row"><div class="ln">26-31</div><div class="lc">  useEffect(() =&gt; {'{'} 
+    if (!userId) return;
+    fetch('/api/charts')
+      .then(r =&gt; r.json())
+      .then(d =&gt; setCharts(d.charts || []));
+  {'}'}, [userId]);</div></div>
+    <div class="line-explain-row">
+      <p class="le">Loads saved charts when userId becomes available. <strong>if (!userId) return</strong> — on first render userId is an empty string — skip the fetch. [userId] dependency means this re-runs when userId changes — only once since userId goes from "" to the actual ID.</p>
+      <p class="lb"><span class="lb-icon">⚠</span> Remove the if (!userId) return guard: the first fetch fires with an empty userId — /api/charts gets no user ID — returns empty array or error. The charts load correctly but there's a wasted network request on every page load.</p>
+    </div>
+  </div>
+
+  <div class="line-block">
+    <div class="line-code-row"><div class="ln">33-38</div><div class="lc">  const handleGenerate = (code: string) =&gt; {'{'} 
+    setMermaidCode(code);
+    fetch('/api/charts').then(r =&gt; r.json()).then(d =&gt; setCharts(d.charts || []));
+  {'}'};</div></div>
+    <div class="line-explain-row">
+      <p class="le">Called by FlowEditor when a new chart is generated. Updates mermaidCode state (FlowCanvas re-renders) and refreshes the charts list (sidebar shows the new chart). Two state updates in one handler — React batches them into a single re-render.</p>
+      <p class="lb"><span class="lb-icon">⚠</span> Skip refreshing charts after generation: new chart appears in canvas but not in the sidebar until page reload — feels broken to users. Always sync the sidebar after a successful generation.</p>
+    </div>
+  </div>
+
+  <button class="nav-btn" onclick="gf(12)">Next: Login page →</button>
+</div>
+
+<!-- ══════════════════════════════════ FILE 13: login/page.tsx -->
+<div class="fp" id="f12">
+  <div class="file-header" style="background:#0F2D54">
+    <p class="file-title">app/login/page.tsx</p>
+    <p class="file-purpose">Email + password form. Calls /api/auth/login, gets cookie set by the server, redirects to /dashboard.</p>
+  </div>
+
+  <div class="line-block">
+    <div class="line-code-row"><div class="ln">1</div><div class="lc">"use client";</div></div>
+    <div class="line-explain-row">
+      <p class="le">Required because this component uses useState (for form fields), useRouter (for programmatic navigation), and event handlers (onSubmit). All of these are browser-only APIs — they don't exist during server rendering.</p>
+      <p class="lb"><span class="lb-icon">⚠</span> Remove "use client": Next.js tries to run this on the server — useState throws "You're importing a component that needs useState. It only works in a Client Component." The page completely fails to render.</p>
+    </div>
+  </div>
+
+  <div class="line-block">
+    <div class="line-code-row"><div class="ln">8</div><div class="lc">  const router = useRouter();</div></div>
+    <div class="line-explain-row">
+      <p class="le"><strong>useRouter()</strong> gives you programmatic navigation — router.push('/dashboard') navigates without a full page reload, preserving React state. It's the Next.js equivalent of window.location.href but integrated with the framework's routing.</p>
+      <p class="lb"><span class="lb-icon">⚠</span> Use window.location.href = '/dashboard': causes a full page reload — slower, loses all React state. Use &lt;Link href="/dashboard"&gt;: Links are for anchor tags in JSX, not programmatic navigation in event handlers.</p>
+    </div>
+  </div>
+
+  <div class="line-block">
+    <div class="line-code-row"><div class="ln">14</div><div class="lc">  const handleSubmit = async (e: React.FormEvent) =&gt; {'{'}</div></div>
+    <div class="line-explain-row">
+      <p class="le">async is required because we use await fetch() inside. React.FormEvent is the TypeScript type for a form submit event — gives you access to e.preventDefault(). Without the type, TypeScript doesn't know what e is.</p>
+      <p class="lb"><span class="lb-icon">⚠</span> Remove async: can't use await inside — fetch() fires but code continues before getting a response — router.push('/dashboard') happens immediately whether login succeeded or not — everyone gets in.</p>
+    </div>
+  </div>
+
+  <div class="line-block">
+    <div class="line-code-row"><div class="ln">23</div><div class="lc">    if (!res.ok) {'{'} setError(data.error || 'Login failed'); return; {'}'}</div></div>
+    <div class="line-explain-row">
+      <p class="le"><strong>res.ok</strong> is true for 200-299 status codes, false for 400-599. This is how you check if the request succeeded. data.error is the message from your API route. The <strong>return</strong> stops execution — without it, the code continues to router.push even after a failed login.</p>
+      <p class="lb"><span class="lb-icon">⚠</span> Check res.status === 200 instead of res.ok: you need separate checks for 201, 202, etc. res.ok is the idiomatic way. Forget the return: the error sets correctly but router.push still runs — user gets redirected to dashboard despite wrong password.</p>
+    </div>
+  </div>
+
+  <div class="summary">
+    <div class="sum-title">Complete picture — how all 13 files work together</div>
+    <div class="sum-item"><span>1</span> User visits /register → register/page.tsx sends to /api/auth/register → password hashed, user saved, JWT cookie set</div>
+    <div class="sum-item"><span>2</span> User visits /dashboard → middleware.ts reads cookie, verifies JWT, lets them through</div>
+    <div class="sum-item"><span>3</span> Dashboard loads → fetches /api/auth/me for userId → fetches /api/charts for sidebar</div>
+    <div class="sum-item"><span>4</span> User types prompt → FlowEditor calls /api/charts/generate → Gemini returns Mermaid → saved to DB</div>
+    <div class="sum-item"><span>5</span> FlowEditor calls onGenerate(mermaidCode) → dashboard updates state → FlowCanvas re-renders diagram</div>
+    <div class="sum-item"><span>6</span> New chart appears in sidebar → user clicks it → setMermaidCode updates → FlowCanvas re-renders</div>
+  </div>
+  <button class="nav-btn" onclick="gf(0)">↑ Back to start</button>
+</div>
+</div>
+
+<script>
+const files = document.querySelectorAll('.fp');
+const btns = document.querySelectorAll('.fnb');
+function gf(n){
+  files.forEach(f=>f.classList.remove('active'));
+  btns.forEach(b=>b.classList.remove('active'));
+  files[n].classList.add('active');
+  btns[n].classList.add('active');
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+</script>

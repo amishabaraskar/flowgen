@@ -1,0 +1,200 @@
+
+<style>
+  body{margin:0;background:transparent}
+  .hero-wrap{display:flex;flex-direction:column;align-items:center;padding:2rem 1rem;gap:1.5rem}
+  .prompt-bar{background:var(--color-background-primary);border:0.5px solid var(--color-border-secondary);border-radius:var(--border-radius-lg);padding:12px 16px;font-size:13px;color:var(--color-text-secondary);max-width:520px;width:100%;display:flex;align-items:center;gap:10px;font-family:var(--font-sans)}
+  .prompt-cursor{display:inline-block;width:2px;height:14px;background:#378ADD;animation:blink 1s step-end infinite;vertical-align:middle;margin-left:1px}
+  @keyframes blink{0%,100%{opacity:1}50%{opacity:0}}
+  .generate-btn{background:#378ADD;color:#fff;border:none;border-radius:var(--border-radius-md);padding:8px 18px;font-size:12px;font-weight:500;cursor:pointer;white-space:nowrap;flex-shrink:0;opacity:0;transition:opacity .3s}
+  .generate-btn.show{opacity:1}
+  .generate-btn.loading{background:#185FA5}
+
+  .canvas-wrap{background:var(--color-background-primary);border:0.5px solid var(--color-border-tertiary);border-radius:var(--border-radius-lg);padding:20px;max-width:560px;width:100%;min-height:300px;display:flex;align-items:center;justify-content:center;position:relative;overflow:hidden}
+  .placeholder{font-size:13px;color:var(--color-text-tertiary);text-align:center;position:absolute;transition:opacity .4s}
+  .placeholder.hidden{opacity:0}
+
+  svg#fc{width:100%;height:auto;overflow:visible}
+
+  .node-g{opacity:0;transform:translateY(10px);transition:opacity .5s, transform .5s}
+  .node-g.show{opacity:1;transform:translateY(0)}
+  .edge{stroke-dasharray:200;stroke-dashoffset:200;transition:stroke-dashoffset .6s ease}
+  .edge.draw{stroke-dashoffset:0}
+  .edge-label{opacity:0;transition:opacity .3s}
+  .edge-label.show{opacity:1}
+
+  .status-bar{font-size:11px;color:var(--color-text-tertiary);text-align:center;height:16px;transition:opacity .3s}
+  .restart-btn{font-size:11px;padding:5px 14px;border:0.5px solid var(--color-border-tertiary);border-radius:20px;background:transparent;color:var(--color-text-secondary);cursor:pointer;margin-top:4px}
+  .restart-btn:hover{background:var(--color-background-secondary)}
+</style>
+
+<div class="hero-wrap">
+  <div class="prompt-bar">
+    <span style="color:var(--color-text-tertiary);font-size:12px;flex-shrink:0">Prompt</span>
+    <span id="typed-text" style="flex:1;color:var(--color-text-primary);font-size:12px"></span><span class="prompt-cursor"></span>
+    <button class="generate-btn" id="gen-btn">Generate ✦</button>
+  </div>
+
+  <div class="canvas-wrap">
+    <div class="placeholder" id="placeholder">Your flowchart will appear here</div>
+    <svg id="fc" viewBox="0 0 500 380" xmlns="http://www.w3.org/2000/svg" style="display:none">
+      <defs>
+        <marker id="arr" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+          <path d="M2 1L8 5L2 9" fill="none" stroke="#378ADD" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+        </marker>
+        <marker id="arr-red" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+          <path d="M2 1L8 5L2 9" fill="none" stroke="#E24B4A" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+        </marker>
+        <marker id="arr-green" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+          <path d="M2 1L8 5L2 9" fill="none" stroke="#1D9E75" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+        </marker>
+      </defs>
+
+      <!-- Node 1: User submits -->
+      <g class="node-g" id="n1">
+        <rect x="165" y="10" width="170" height="40" rx="8" fill="#E6F1FB" stroke="#378ADD" stroke-width="1"/>
+        <text x="250" y="35" text-anchor="middle" font-size="12" fill="#0C447C" font-family="sans-serif" font-weight="500">User submits prompt</text>
+      </g>
+
+      <!-- Edge 1→2 -->
+      <line class="edge" id="e1" x1="250" y1="50" x2="250" y2="88" stroke="#378ADD" stroke-width="1.5" marker-end="url(#arr)"/>
+
+      <!-- Node 2: AI generates -->
+      <g class="node-g" id="n2">
+        <rect x="155" y="90" width="190" height="40" rx="8" fill="#EEEDFE" stroke="#534AB7" stroke-width="1"/>
+        <text x="250" y="115" text-anchor="middle" font-size="12" fill="#26215C" font-family="sans-serif" font-weight="500">AI generates Mermaid</text>
+      </g>
+
+      <!-- Edge 2→3 -->
+      <line class="edge" id="e2" x1="250" y1="130" x2="250" y2="168" stroke="#378ADD" stroke-width="1.5" marker-end="url(#arr)"/>
+
+      <!-- Node 3: Validate -->
+      <g class="node-g" id="n3">
+        <polygon points="250,170 330,200 250,230 170,200" fill="#FAEEDA" stroke="#BA7517" stroke-width="1"/>
+        <text x="250" y="196" text-anchor="middle" font-size="11" fill="#412402" font-family="sans-serif" font-weight="500">Valid</text>
+        <text x="250" y="210" text-anchor="middle" font-size="11" fill="#412402" font-family="sans-serif" font-weight="500">Mermaid?</text>
+      </g>
+
+      <!-- Edge 3→4 YES -->
+      <line class="edge" id="e3" x1="250" y1="230" x2="250" y2="268" stroke="#1D9E75" stroke-width="1.5" marker-end="url(#arr-green)"/>
+      <text class="edge-label" id="el3" x="257" y="254" font-size="10" fill="#1D9E75" font-family="sans-serif" font-weight="600">Yes</text>
+
+      <!-- Edge 3→retry NO -->
+      <path class="edge" id="e3b" d="M330 200 L400 200 L400 115 L345 115" fill="none" stroke="#E24B4A" stroke-width="1.5" marker-end="url(#arr-red)"/>
+      <text class="edge-label" id="el3b" x="336" y="197" font-size="10" fill="#E24B4A" font-family="sans-serif" font-weight="600">No → retry</text>
+
+      <!-- Node 4: Save to DB -->
+      <g class="node-g" id="n4">
+        <rect x="165" y="270" width="170" height="40" rx="8" fill="#E1F5EE" stroke="#0F6E56" stroke-width="1"/>
+        <text x="250" y="295" text-anchor="middle" font-size="12" fill="#04342C" font-family="sans-serif" font-weight="500">Save to MongoDB</text>
+      </g>
+
+      <!-- Edge 4→5 -->
+      <line class="edge" id="e4" x1="250" y1="310" x2="250" y2="348" stroke="#378ADD" stroke-width="1.5" marker-end="url(#arr)"/>
+
+      <!-- Node 5: Render diagram -->
+      <g class="node-g" id="n5">
+        <rect x="145" y="350" width="210" height="40" rx="20" fill="#378ADD" stroke="#185FA5" stroke-width="1"/>
+        <text x="250" y="375" text-anchor="middle" font-size="12" fill="#fff" font-family="sans-serif" font-weight="500">Diagram rendered ✦</text>
+      </g>
+    </svg>
+  </div>
+
+  <div class="status-bar" id="status"></div>
+  <button class="restart-btn" id="restart-btn" style="display:none" onclick="startAnimation()">↺ Replay</button>
+</div>
+
+<script>
+const PROMPT = "User submits prompt, AI generates flowchart, validate output, save to DB, render diagram";
+const typedEl = document.getElementById('typed-text');
+const genBtn = document.getElementById('gen-btn');
+const placeholder = document.getElementById('placeholder');
+const fc = document.getElementById('fc');
+const statusEl = document.getElementById('status');
+const restartBtn = document.getElementById('restart-btn');
+
+const nodes = ['n1','n2','n3','n4','n5'];
+const edges = ['e1','e2','e3','e3b','e4'];
+const labels = ['el3','el3b'];
+
+function delay(ms){ return new Promise(r => setTimeout(r, ms)); }
+
+function reset(){
+  typedEl.textContent = '';
+  genBtn.classList.remove('show','loading');
+  genBtn.textContent = 'Generate ✦';
+  placeholder.classList.remove('hidden');
+  fc.style.display = 'none';
+  statusEl.textContent = '';
+  restartBtn.style.display = 'none';
+  nodes.forEach(id => document.getElementById(id).classList.remove('show'));
+  edges.forEach(id => document.getElementById(id).classList.remove('draw'));
+  labels.forEach(id => document.getElementById(id).classList.remove('show'));
+}
+
+async function typeText(text){
+  for(let i=0; i<=text.length; i++){
+    typedEl.textContent = text.slice(0,i);
+    await delay(38);
+  }
+}
+
+async function showNode(id, status){
+  statusEl.textContent = status;
+  document.getElementById(id).classList.add('show');
+  await delay(600);
+}
+
+async function drawEdge(id, labelId){
+  document.getElementById(id).classList.add('draw');
+  if(labelId) { await delay(300); document.getElementById(labelId).classList.add('show'); }
+  await delay(500);
+}
+
+async function startAnimation(){
+  reset();
+  await delay(400);
+
+  // Type the prompt
+  statusEl.textContent = 'Typing prompt...';
+  await typeText(PROMPT);
+  await delay(400);
+
+  // Show button
+  genBtn.classList.add('show');
+  await delay(700);
+
+  // Click effect
+  genBtn.classList.add('loading');
+  genBtn.textContent = 'Generating...';
+  statusEl.textContent = 'Calling AI...';
+  await delay(900);
+
+  // Show canvas
+  placeholder.classList.add('hidden');
+  await delay(300);
+  fc.style.display = 'block';
+
+  // Animate nodes and edges in sequence
+  await showNode('n1', 'Step 1 — Prompt received');
+  await drawEdge('e1');
+  await showNode('n2', 'Step 2 — Gemini generating Mermaid...');
+  await drawEdge('e2');
+  await showNode('n3', 'Step 3 — Validating output...');
+  await delay(400);
+  await drawEdge('e3b', 'el3b');
+  await delay(300);
+  await drawEdge('e3', 'el3');
+  await showNode('n4', 'Step 4 — Saving to MongoDB...');
+  await drawEdge('e4');
+  await showNode('n5', '');
+
+  // Done
+  genBtn.textContent = 'Generate ✦';
+  genBtn.classList.remove('loading');
+  statusEl.textContent = '✦ Flowchart ready in 3.2s';
+  restartBtn.style.display = 'inline-block';
+}
+
+// Auto-start
+startAnimation();
+</script>
