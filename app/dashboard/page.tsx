@@ -3,6 +3,7 @@ import { useState, useEffect } from "react";
 import dynamic from "next/dynamic";
 import FlowEditor from "@/components/FlowEditor";
 import NavBar from "@/components/NavBar";
+import { useSession } from "next-auth/react";
 
 // Dynamic import with ssr:false — critical for Mermaid.js
 const FlowCanvas = dynamic(() => import("@/components/FlowCanvas"), {
@@ -24,29 +25,34 @@ interface Chart {
 export default function DashboardPage() {
   const [mermaidCode, setMermaidCode] = useState("");
   const [charts, setCharts] = useState<Chart[]>([]);
-  const [userId, setUserId] = useState("");
+  // const [userId, setUserId] = useState("");
   const [loading, setLoading] = useState(false);
-  // Get userId from the server on mount
-  useEffect(() => {
-    fetch("/api/auth/me")
-      .then((r) => r.json())
-      .then((d) => {
-        if (d.userId) setUserId(d.userId);
-      });
-  }, []);
-
-  // Load saved charts
+  const { data: session, status } = useSession();
+  const userId = (session?.user as any)?.id;
   useEffect(() => {
     if (!userId) return;
-    fetch("/api/charts")
+    fetch(`/api/charts/?userId=${userId}`)
       .then((r) => r.json())
       .then((d) => setCharts(d.charts || []));
   }, [userId]);
 
+  if (status === "loading") return <p>Loading...</p>;
+  if (!session) return null; // middleware handles redirect
+
+  // Get userId from the server on mount
+  // useEffect(() => {
+  //   fetch("/api/auth/me")
+  //     .then((r) => r.json())
+  //     .then((d) => {
+  //       if (d.userId) setUserId(d.userId);
+  //     });
+  // }, []);
+
+  // Load saved charts
   const handleGenerate = (code: string) => {
     setMermaidCode(code);
     // Refresh saved charts list
-    fetch("/api/charts")
+    fetch(`/api/charts/?userId=${userId}`)
       .then((r) => r.json())
       .then((d) => setCharts(d.charts || []));
   };

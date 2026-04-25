@@ -6,6 +6,11 @@ const userSchema = new Schema(
     password: { type: String, required: true },
     plan: { type: String, enum: ["free", "pro"], default: "free" },
     usageCount: { type: Number, default: 0 }, // track usage for free tier
+    provider: {
+      type: String,
+      enum: ["credentials", "google"],
+      default: "credentials",
+    },
   },
   { timestamps: true },
 );

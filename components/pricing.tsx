@@ -1,4 +1,4 @@
-import { ArrowRight, Check, MoveRight } from "lucide-react";
+import { ArrowRight, Check } from "lucide-react";
 
 const plans = [
   {
@@ -49,7 +49,19 @@ function Pricing() {
 
 export default Pricing;
 
-function PriceItem({ title, subtitle, benefits, price, highlight }) {
+function PriceItem({
+  title,
+  subtitle,
+  benefits,
+  price,
+  highlight,
+}: {
+  title: string;
+  subtitle: string;
+  benefits: string[];
+  price: number;
+  highlight: boolean;
+}) {
   return (
     <div
       className={`flex flex-col  border border-gray-300 ${
@@ -66,7 +78,7 @@ function PriceItem({ title, subtitle, benefits, price, highlight }) {
         </div>
       </div>
       <div className="space-y-3 py-5 flex-1">
-        {benefits.map((benefit, idx) => {
+        {benefits.map((benefit: string, idx: number) => {
           return (
             <div className="flex place-items-center gap-2" key={idx}>
               <Check size={18} />

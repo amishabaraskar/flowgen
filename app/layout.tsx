@@ -1,5 +1,8 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
+import { getServerSession } from "next-auth";
+import SessionWrapper from "@/components/SessionWrapper";
+
 import "./globals.css";
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -42,7 +45,9 @@ export default function RootLayout({
             </a>
           )}
         </nav> */}
-        <main className="max-w-screen mx-auto">{children}</main>
+        <SessionWrapper>
+          <main className="max-w-screen mx-auto">{children}</main>
+        </SessionWrapper>
       </body>
     </html>
   );
